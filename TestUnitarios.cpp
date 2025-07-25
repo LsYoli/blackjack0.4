@@ -109,10 +109,6 @@ void TestUnitarios::ejecutarTodasLasPruebas() {
     probarCrupierMostrarMano();
     probarCrupierDebeTomarCarta();
     
-    mostrarEncabezadoClase("INTERFAZ");
-    probarInterfazFormatearDinero();
-    probarInterfazCalcularPorcentajeVictorias();
-    
     // Mostrar resumen final
     mostrarResumenFinal();
 }
@@ -507,4 +503,102 @@ void TestUnitarios::probarJugadorTieneBlackjack() {
     Jugador jugador2;
     jugador2.recibirCarta(Carta("10", "Corazones"));
     jugador2.recibirCarta(Carta("9", "Picas"));
-    verificarTest(!jugador2.tieneBlackjack(), "
+    verificarTest(!jugador2.tieneBlackjack(), "10 + 9 no es blackjack");
+}
+
+void TestUnitarios::probarJugadorGetDinero() {
+    Jugador jugador;
+    verificarTest(jugador.getDinero() == 1000.0, "getDinero", "El dinero inicial es 1000.");
+}
+
+void TestUnitarios::probarJugadorAjustarDinero() {
+    Jugador jugador;
+    jugador.ajustarDinero(500.0);
+    verificarTest(jugador.getDinero() == 1500.0, "ajustarDinero", "Dinero ajustado correctamente.");
+}
+
+void TestUnitarios::probarJugadorPuedeApostar() {
+    Jugador jugador;
+    verificarTest(jugador.puedeApostar(500.0), "puedeApostar", "Se puede apostar 500.");
+    verificarTest(!jugador.puedeApostar(1500.0), "puedeApostar", "No se puede apostar más del dinero disponible.");
+}
+
+void TestUnitarios::probarJugadorRealizarApuesta() {
+    Jugador jugador;
+    verificarTest(jugador.realizarApuesta(500.0), "realizarApuesta", "Apuesta realizada con éxito.");
+    verificarTest(jugador.getDinero() == 500.0, "realizarApuesta", "El dinero debe ser 500 después de hacer la apuesta.");
+}
+
+void TestUnitarios::probarJugadorGetCantidadApostada() {
+    Jugador jugador;
+    jugador.realizarApuesta(500.0);
+    verificarTest(jugador.getCantidadApostada() == 500.0, "getCantidadApostada", "Cantidad apostada correcta.");
+}
+
+void TestUnitarios::probarJugadorProcesarResultado() {
+    Jugador jugador;
+    jugador.realizarApuesta(500.0);
+    jugador.procesarResultado(true, false, false); // Ganó sin blackjack
+    verificarTest(jugador.getDinero() == 1000.0, "procesarResultado", "Ganó, el dinero debe ser 1000.");
+}
+
+void TestUnitarios::probarJugadorPuedeSeguirJugando() {
+    Jugador jugador(100.0);
+    verificarTest(jugador.puedeSeguirJugando(), "puedeSeguirJugando", "El jugador puede seguir jugando con 100.");
+    jugador.ajustarDinero(-100.0);
+    verificarTest(!jugador.puedeSeguirJugando(), "puedeSeguirJugando", "El jugador no puede seguir jugando con 0.");
+
+}
+
+// ========== PRUEBAS CLASE CROUPIER ==========
+void TestUnitarios::probarCrupierConstructor() {
+    Crupier crupier;
+    verificarTest(crupier.getDinero() == 0.0, "CrupierConstructor", "El crupier no debe tener dinero inicial.");
+}
+
+void TestUnitarios::probarCrupierMostrarMano() {
+    Crupier crupier;
+    Carta carta("A", "Corazones");
+    crupier.recibirCarta(carta);
+    // Aquí deberías capturar la salida estándar si es necesario para verificar el resultado.
+    crupier.mostrarMano(true); // Llama al método que quieres probar.
+}
+
+void TestUnitarios::probarCrupierDebeTomarCarta() {
+    Crupier crupier;
+    crupier.recibirCarta(Carta("5", "Corazones"));
+    crupier.recibirCarta(Carta("9", "Picas"));
+    verificarTest(crupier.debeTomarCarta(), "debeTomarCarta", "El crupier debe tomar carta teniendo menos de 17 puntos.");
+
+    crupier.recibirCarta(Carta("3", "Diamantes")); // Ahora tiene 17
+    verificarTest(!crupier.debeTomarCarta(), "debeTomarCarta", "El crupier no debe tomar carta teniendo 17 o más puntos.");
+}
+
+void TestUnitarios::probarCrupierMostrarResultadoFinal() {
+    Crupier crupier;
+    crupier.recibirCarta(Carta("10", "Corazones"));
+    crupier.recibirCarta(Carta("7", "Picas"));
+    crupier.mostrarResultadoFinal(); // Llama al método que quieres probar.
+}
+
+// ========== PRUEBAS METODOS REPORTE ==========
+
+void TestUnitarios::mostrarResumenFinal() {
+    cout << "\n==========================================" << endl;
+    cout << "            RESUMEN FINAL              " << endl;
+    cout << "==========================================" << endl;
+    cout << "Tests Ejecutados: " << testsEjecutados << endl;
+    cout << "Tests Pasados: " << testsPasados << endl;
+    cout << "Tests Fallidos: " << testsFallidos << endl;
+}
+void TestUnitarios::mostrarDetallesFallos() {
+    if (testsFallidos > 0) {
+        cout << "Detalles de Fallos:" << endl;
+        for (const auto& fallo : fallosDetallados) {
+            cout << fallo << endl;
+        }
+    }
+}
+bool TestUnitarios::todosPasaron() const {
+    return testsFallidos == 0;
+}

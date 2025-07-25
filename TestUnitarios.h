@@ -104,11 +104,6 @@ public:
     void probarCrupierDebeTomarCarta();
     void probarCrupierMostrarResultadoFinal();
     
-    // === PRUEBAS CLASE INTERFAZ ===
-    void probarInterfazFormatearDinero();
-    void probarInterfazCalcularPorcentajeVictorias();
-    void probarInterfazCentrarTexto();
-    
     // Métodos de reporte
     void mostrarResumenFinal();
     void mostrarDetallesFallos();

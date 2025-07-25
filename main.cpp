@@ -16,14 +16,43 @@ Toda la lógica compleja ha sido delegada a las clases especializadas.
 @version 2.0
 */
 
+#include <iostream>
 #include "Controlador.h"
+#include "TestUnitarios.h"
+
+using namespace std;
 
 int main() {
-    // Crear la instancia del controlador
-    Controlador controladorJuego;
-    
-    // Iniciar el flujo completo del juego
-    controladorJuego.iniciarJuego();
-    
+    int opcion;
+    TestUnitarios testUnitarios;
+
+    do {
+        cout << "==========================" << endl;
+        cout << "       MENÚ PRINCIPAL     " << endl;
+        cout << "==========================" << endl;
+        cout << "1. Jugar" << endl;
+        cout << "2. Ejecutar pruebas unitarias" << endl;
+        cout << "3. Salir" << endl;
+        cout << "Selecciona una opción: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1: {
+                Controlador controlador;
+                controlador.iniciarJuego();
+                break;
+            }
+            case 2: {
+                testUnitarios.ejecutarTodasLasPruebas();
+                break;
+            }
+            case 3:
+                cout << "Saliendo del programa. ¡Hasta luego!" << endl;
+                break;
+            default:
+                cout << "Opción no válida. Por favor, selecciona de nuevo." << endl;
+        }
+    } while (opcion != 3);
+
     return 0;
 }
