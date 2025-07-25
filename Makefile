@@ -1,6 +1,6 @@
 TARGET = blackjack
 
-SRCS = main.cpp Carta.cpp Baraja.cpp Mano.cpp Jugador.cpp Crupier.cpp
+SRCS = main.cpp Carta.cpp Baraja.cpp Mano.cpp Jugador.cpp Crupier.cpp Apuesta.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

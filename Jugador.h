@@ -1,42 +1,76 @@
 /*
-@brief Representa a un jugador humano del juego Blackjack.
+@brief Representa un jugador del juego Blackjack (clase base).
 
 @details
-La clase Jugador contiene una mano propia y administra su interacción durante el turno. Permite que el jugador solicite más cartas o decida plantarse y ofrece funciones para verificar si esta eliminado, permite mostrar cual es su puntaje total y tambien permite mostrar el estado actual de su mano.
+La clase Jugador ahora sirve como clase base que contiene funcionalidad común
+para jugadores humanos y el crupier. Maneja la mano de cartas, el dinero del
+jugador y las apuestas. Incluye métodos virtuales que pueden ser sobrescritos
+por clases derivadas para implementar comportamientos específicos.
 
 Responsabilidades:
 - Gestionar la mano del jugador.
-- Permitir al jugador pedir cartas o plantarse.
-- Mostrar la mano y puntaje.
-- Determinar si ganó, perdió o tiene blackjack.
+- Administrar el dinero y las apuestas.
+- Proporcionar interfaz común para jugadores y crupier.
+- Permitir personalización del comportamiento mediante herencia.
 
 Colaboraciones:
 - Usa Mano para administrar cartas.
-- Recibe cartas desde Baraja.
+- Usa Apuesta para gestionar dinero.
+- Clase base para Crupier.
 
  @autor [Daniel Andres Micolta Gongora]
  @mail [micolta.daniel@correounivalle.edu.co]
  @autor [Luis Santiago Arenas Hincapie]
  @mail [luis.arenas@correounivalle.edu.co]
- @date 2025-05-14
- @version 1.0
+ @date 2025-07-24
+ @version 3.0
 */
+
 #ifndef JUGADOR_H
 #define JUGADOR_H
+
 #include "Mano.h"
 #include "Baraja.h"
+#include "Apuesta.h"
 
 class Jugador {
-private:
+protected:
     Mano mano;
+    double dinero;
+    Apuesta apuestaActual;
+    static const double DINERO_INICIAL;
 
 public:
-    void recibirCarta(Carta c);
-    void mostrarMano() const;
+    // Constructor
+    Jugador(double dineroInicial = 1000.0);
+    
+    // Destructor virtual para permitir herencia correcta
+    virtual ~Jugador() = default;
+    
+    // Métodos básicos de manejo de cartas
+    virtual void recibirCarta(Carta c);
+    virtual void mostrarMano() const;
+    virtual void reiniciarMano();
+    
+    // Métodos de estado del juego
     bool estaEliminado() const;
     int getPuntos() const;
     bool tieneBlackjack() const;
-    void turno(Baraja& baraja);
+    
+    // Métodos de gestión de dinero
+    double getDinero() const;
+    void ajustarDinero(double cantidad);
+    bool puedeApostar(double cantidad) const;
+    
+    // Métodos de apuestas
+    bool realizarApuesta(double cantidad);
+    double getCantidadApostada() const;
+    void procesarResultado(bool gano, bool empate = false, bool esBlackjack = false);
+    
+    // Método virtual para el turno (puede ser sobrescrito)
+    virtual void turno(Baraja& baraja);
+    
+    // Método para verificar si puede seguir jugando
+    bool puedeSeguirJugando() const;
 };
-
-#endif
+ #endif
