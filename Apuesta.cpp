@@ -1,9 +1,5 @@
 #include "Apuesta.h"
 
-// Definición de constantes estáticas
-const double Apuesta::MULTIPLICADOR_BLACKJACK = 1.5; // Blackjack paga 3:2
-const double Apuesta::MULTIPLICADOR_GANANCIA = 1.0;  // Ganancia normal paga 1:1
-
 Apuesta::Apuesta() : cantidadApostada(0.0) {}
 
 void Apuesta::establecerApuesta(double cantidad) {
@@ -17,10 +13,10 @@ double Apuesta::getCantidadApostada() const {
 double Apuesta::calcularGanancia(bool esBlackjack) const {
     if (esBlackjack) {
         // Blackjack paga 3:2 (devuelve apuesta + ganancia de 1.5x)
-        return cantidadApostada + (cantidadApostada * MULTIPLICADOR_BLACKJACK);
+        return cantidadApostada + (cantidadApostada * 1.5);
     } else {
         // Ganancia normal paga 1:1 (devuelve apuesta + ganancia igual)
-        return cantidadApostada + (cantidadApostada * MULTIPLICADOR_GANANCIA);
+        return 2*cantidadApostada ;
     }
 }
 

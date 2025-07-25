@@ -16,8 +16,6 @@
 class Apuesta {
 private:
     double cantidadApostada;
-    static const double MULTIPLICADOR_BLACKJACK; // 1.5 (paga 3:2)
-    static const double MULTIPLICADOR_GANANCIA;  // 1.0 (paga 1:1)
 
 public:
     // Constructor
